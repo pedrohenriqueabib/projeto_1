@@ -1,5 +1,6 @@
 <?php
 require_once 'conexao.php';
+require_once 'usuario.php';
 session_start();
 
 class Tarefa{
@@ -19,15 +20,20 @@ class Tarefa{
         header('location: ../view/home.php');
     }
 
-    public function cadastrarTarefa(){
-
+    public function cadastrarTarefa(array $array):void{
+        $pd = $this->pdo->prepare('INSERT INTO tarefa(nome, descricao, estado, id_usuario)
+        VALUES(:nome, :descricao, 0, :id)');
+        $pd->bindParam('nome', $array['nome']);
+        $pd->bindParam('descricao', $array['descricao']);
+        $pd->bindParam('id', $_SESSION['usuario']['id']);
+        $pd->execute();
+        $this->listarTarefa($_SESSION['usuario']['id']);
     }
 
     public function concluirTarefa(array $array){
         $pd = $this->pdo->prepare("UPDATE tarefa SET estado = 1 WHERE id = :id");
         $pd->bindParam(':id', $array['id_tarefa']);
         $pd->execute();
-        echo 'feito';
-
+        $this->listarTarefa($_SESSION['usuario']['id']);
     }
 }

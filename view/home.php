@@ -2,6 +2,8 @@
 session_start();
 $usuario = $_SESSION['usuario'];
 $tarefa = $_SESSION['tarefa'];
+
+// var_dump($usuario);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -13,22 +15,22 @@ $tarefa = $_SESSION['tarefa'];
 </head>
 <body>
     <div class="minhaTarefas">
-        <p>Minhas Tarefas:</p>
+        <p>Minhas Tarefas:</p><a href='view_cadastrar_tarefa.php'>Cadastrar tarefa</a>
         <table>
             <tr>
-                <th>Nome</th><th>Descrição</th><th>Estado</th><th>Ação</th>
+                <th>Nome</th><th>Descrição</th><th>Concluído</th><th>Ação</th>
             </tr>
                 <?php
                 foreach ($tarefa as $valor) {
-                    // if($valor['estado'] == 1){
-                    //     $estado = 'concluído';
-                    // }else{
-                    //     $estado = 'em aberto';
-                    // }              
+                    if($valor['estado'] == 1){
+                        $estado = 'sim';
+                    }else{
+                        $estado = 'não';
+                    }
                     echo "<tr>
                             <td>".$valor['nome']."</td>
                             <td>".$valor['descricao']."</td>
-                            <td>".$valor['estado']."</td>
+                            <td>".$estado."</td>
                             <td>
                                 <form action='../controller/tarefaControle.php' method='POST'>
                                     <input type='hidden' value='concluirTarefa' name='funcao'>

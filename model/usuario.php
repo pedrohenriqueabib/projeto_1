@@ -49,11 +49,9 @@ class Usuario{
         }else{
             $p = $pd->fetch();
             session_start();
-            $_SESSION['usuario'] = ['nome'=>$p['nome']];
+            $_SESSION['usuario'] = ['nome'=>$p['nome'], 'id'=>$p['id']];
             $tarefa = new Tarefa();
             $tarefa->listarTarefa($p['id']);
-
-
         }
         
     }
